@@ -93,6 +93,7 @@ app.get('/auth/github/callback', (req, res) => {
             githubAccessToken: accessToken,
             bio: response.body.bio,
             location: response.body.location,
+            blog: response.body.blog,
             profileUrl: response.body.html_url,
             photoUrl: response.body.avatar_url,
             createdAt: new Date(),
@@ -137,6 +138,18 @@ app.get('/auth/github/callback', (req, res) => {
           console.log(error)
         })
     })
+})
+
+app.get('/people', auth, (req, res) => {
+  User.find({}, '_id username displayName favProgLang photoUrl').then((users) => {
+    res.json(users)
+  })
+})
+
+app.get('/user/:username', auth, (req, res) => {
+  User.findOne({ username: req.params.username }).then((user) => {
+    res.json(user)
+  })
 })
 
 app.listen(PORT, () => {

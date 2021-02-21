@@ -11,6 +11,7 @@ const initialUser = () : User => {
     favProgLang: '',
     bio: '',
     location: '',
+    blog: '',
     profileUrl: '',
     photoUrl: '',
     createdAt: new Date(),

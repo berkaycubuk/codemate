@@ -9,6 +9,7 @@ export interface UserInfo {
   favProgLang: String
   bio: String
   location: String
+  blog: String
   profileUrl: String
   photoUrl: String
 }

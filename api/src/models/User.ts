@@ -26,6 +26,9 @@ const userSchema = new mongoose.Schema({
   location: {
     type: String
   },
+  blog: {
+    type: String
+  },
   profileUrl: {
     type: String
   },

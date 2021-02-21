@@ -7,14 +7,15 @@ export interface User {
   favProgLang: string
   bio: string
   location: string
+  blog: string
   profileUrl: string
-  photoUrl: string,
-  createdAt: Date,
+  photoUrl: string
+  createdAt: Date
   updatedAt: Date
 }
 
 export type UserStoreState = {
-  user: User,
-  setUser: (user: User) => any,
+  user: User
+  setUser: (user: User) => any
   clearUser: () => any
 }
