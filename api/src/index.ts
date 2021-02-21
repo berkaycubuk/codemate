@@ -2,11 +2,19 @@ require('dotenv').config()
 import express from 'express'
 import request from 'superagent'
 import mongoose from 'mongoose'
+import cors from 'cors'
+import jwt from 'jsonwebtoken'
+
+import auth from './middlewares/auth'
 
 import User from './models/User'
 
+import { UserInfo } from './types'
+
 const app = express()
 const PORT = process.env.PORT || 8000
+
+const jwt_expire = 3600 * 24
 
 // Database connection
 const DB_URL = process.env.MONGO_DB_URL || ''
@@ -19,44 +27,32 @@ mongoose.connect(DB_URL, {
 
 // Middlewares
 app.use(express.json())
+app.use(cors())
 
 app.get('/', (req, res) => {
   res.send('Hello!')
 })
 
-const getGithubProfile = async (accessToken) => {
-  await request
-    .get('https://api.github.com/user')
-    .set('User-Agent', 'request')
-    .set('Authorization', `token ${accessToken}`)
-    .then((response) => {
-      console.log(response.body)
-      return response.body;
-    }).catch((error) => {
-      console.log(error)
-      return null
+app.get('/user', auth, (req: any, res) => {
+   User.findById(req.user.id)
+    .then(user => res.json(user))
+})
+
+app.put('/user', auth, (req: any, res) => {
+  req.body.updatedAt = new Date()
+
+  User.updateOne({ _id: req.user.id }, req.body)
+    .then(() => {
+      res.json({
+        message: 'profile updated.',
+        user: req.body
+      })
+    }).catch((err) => {
+      res.status(500).json({
+        message: 'something is wrong.'
+      })
     })
-}
-
-const registerUser = (user: any, accessToken: String) => {
-  const newUser = new User({
-    githubId: user.id,
-    githubAccessToken: accessToken,
-    profileUrl: user.html_url,
-    photoUrl: user.avatar_url,
-    createdAt: new Date(),
-    updatedAt: new Date()
-  })
-
-  newUser.save((err) => {
-    if (err) {
-      console.log(err)
-      return null
-    }
-
-    return newUser
-  })
-}
+})
 
 app.get('/auth/github/callback', (req, res) => {
   const code = req.query.code
@@ -98,25 +94,44 @@ app.get('/auth/github/callback', (req, res) => {
             bio: response.body.bio,
             location: response.body.location,
             profileUrl: response.body.html_url,
-            photoUrl: response.body.avatar_url
+            photoUrl: response.body.avatar_url,
+            createdAt: new Date(),
+            updatedAt: new Date()
           }
 
-          User.find({ githubId: user.githubId }, (err, docs) => {
+          User.find({ githubId: user.githubId }, (err, docs: UserInfo[]) => {
             if (err) console.log(err)
             if (docs.length) {
-              // res.send(docs)
-              res.redirect('http://localhost:5000')
-            }
-            let newUser = new User(user)
+              console.log(docs)
+              jwt.sign(
+                { id: docs[0]._id },
+                process.env.JWT_SECRET,
+                { expiresIn: jwt_expire },
+                (err, token) => {
+                  if (err) throw err
+                  res.redirect('http://localhost:3000/register?code=' + token)
+                }
+              )
+            } else {
+              let newUser = new User(user)
 
-            newUser.save((err, result) => {
-              if (err) { 
-                console.log(err)
-                // res.status(500).send('Error: User cannot registered')
-              }
-              // res.send(result)
-              res.redirect('http://localhost:5000/register')
-            })
+              newUser.save((err, result) => {
+                if (err) { 
+                  console.log(err)
+                  // res.status(500).send('Error: User cannot registered')
+                }
+  
+                jwt.sign(
+                  { id: result._id },
+                  process.env.JWT_SECRET,
+                  { expiresIn: jwt_expire },
+                  (err, token) => {
+                    if (err) throw err
+                    res.redirect('http://localhost:3000/register?code=' + token)
+                  }
+                )
+              })
+            }
           })
         }).catch((error) => {
           console.log(error)

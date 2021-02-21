@@ -6,33 +6,40 @@ import {
   Link
 } from 'react-router-dom'
 
+import Header from './components/Header'
+import Footer from './components/Footer'
+
+import Welcome from './pages/Welcome'
 import Home from './pages/Home'
 import Register from './pages/Register'
+import Profile from './pages/Profile'
+import Settings from './pages/Settings'
 
 function App() {
   return (
     <Router>
       <div className="flex flex-col min-h-screen  container mx-auto">
-        <header className="flex items-center p-8 bg-gray-100">
-          <Link to="/" className="text-xl font-semibold">Codemate</Link>
-          <nav className="ml-4">
-            <Link to="/" className="text-blue-600 hover:underline">People</Link>
-            <Link to="/register" className="ml-3 text-blue-600 hover:underline">Friends</Link>
-          </nav>
-        </header>
+        <Header />
         <main className="flex-grow p-8">
           <Switch>
+            <Route path="/settings">
+              <Settings />
+            </Route>
+            <Route path="/profile">
+              <Profile />
+            </Route>
             <Route path="/register">
               <Register />
             </Route>
-            <Route path="/">
+            <Route path="/home">
               <Home />
+            </Route>
+            <Route path="/">
+              <Welcome />
             </Route>
           </Switch>
         </main>
-        <footer className="p-6 bg-gray-100">
-          <p className="">Developed by <a href="https://berkaycubuk.com" target="_blank">Berkay Çubuk</a> - 2021</p>
-        </footer>
+        <Footer />
       </div>
     </Router>
   )
