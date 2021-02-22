@@ -18,7 +18,7 @@ export default function Home() {
   }
 
   const getPeople = () => {
-    axios.get('http://localhost:8000/people', {
+    axios.get('https://codemate-api.herokuapp.com/people', {
       headers: {
         Authorization: Cookies.get('token')
       }

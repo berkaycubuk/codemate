@@ -13,7 +13,7 @@ export default function Profile() {
 
   useEffect(() => {
     if (username && !fetched) {
-      axios.get('http://localhost:8000/user/' + username, {
+      axios.get('https://codemate-api.herokuapp.com/user/' + username, {
         headers: {
           Authorization: Cookies.get('token')
         }
@@ -38,7 +38,7 @@ export default function Profile() {
           <h1 className="text-2xl font-bold mb-2">Profile</h1>
           <img className="w-40 h-40 my-4" src={ userState.photoUrl } />
           <div className="text-xl my-2">{ userState.displayName }</div>
-          <img className="w-6 h-6" src={'http://localhost:3000' + '/' + userState.favProgLang + '.svg' } alt="programming language" />
+          <img className="w-6 h-6" src="http://localhost:3000/{ userState.favProgLang }.svg" alt="programming language" />
           <p className="my-4 whitespace-pre-line">{ userState.bio }</p>
           <a className="text-blue-600 hover:underline" rel="noreferrer" href={ userState.blog } target="_blank">{ userState.blog }</a>
         </>

@@ -8,7 +8,7 @@ export default function Home() {
   const { user, setUser } = userStore()
 
   if (Cookies.get('token') && user._id === '') {
-    axios.get('http://localhost:8000/user', {
+    axios.get('https://codemate-api.herokuapp.com/user', {
       headers: {
         Authorization: Cookies.get('token')
       }

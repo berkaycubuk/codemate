@@ -23,7 +23,7 @@ export default function Settings() {
     user.location = location
     user.blog = blog
 
-    axios.put('http://localhost:8000/user', user, {
+    axios.put('https://codemate-api.herokuapp.com/user', user, {
       headers: {
         Authorization: Cookies.get('token')
       }

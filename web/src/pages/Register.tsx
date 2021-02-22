@@ -12,7 +12,7 @@ export default function Register() {
 
   useEffect(() => {
     if (Cookies.get('token')) {
-      axios.get('http://localhost:8000/user', {
+      axios.get('https://codemate-api.herokuapp.com/user', {
         headers: {
           Authorization: Cookies.get('token')
         }
@@ -34,7 +34,7 @@ export default function Register() {
 
     setUser(user)
 
-    axios.put('http://localhost:8000/user', user, {
+    axios.put('https://codemate-api.herokuapp.com/user', user, {
       headers: {
         Authorization: Cookies.get('token')
       }
