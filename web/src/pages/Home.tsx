@@ -46,7 +46,7 @@ export default function Home() {
               <img className="w-20 h-20" src={ user.photoUrl } alt={user.displayName} />
               <div className="flex flex-col ml-4">
                 <div className="text-xl">{ user.displayName }</div>
-                <img className="w-6 h-6 mt-2" src={'http://localhost:3000' + '/' + user.favProgLang + '.svg' } alt="programming language" />
+                <img className="w-6 h-6 mt-2" src="http://localhost:3000/{ user.favProgLang }.svg" alt="programming language" />
               </div>
             </Link> 
           </div>
