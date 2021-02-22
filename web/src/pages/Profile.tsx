@@ -37,7 +37,7 @@ export default function Profile() {
           <h1 className="text-2xl font-bold mb-2">Profile</h1>
           <img className="w-40 h-40 my-4" src={ userState.photoUrl } alt={ userState.displayName} />
           <div className="text-xl my-2">{ userState.displayName }</div>
-          <img className="w-6 h-6" src="http://localhost:3000/{ userState.favProgLang }.svg" alt="programming language" />
+          <img className="w-6 h-6" src={ userState.favProgLang + '.svg' } alt="programming language" />
           <p className="my-4 whitespace-pre-line">{ userState.bio }</p>
           <a className="text-blue-600 hover:underline" rel="noreferrer" href={ userState.blog } target="_blank">{ userState.blog }</a>
         </>
@@ -46,7 +46,7 @@ export default function Profile() {
           <h1 className="text-2xl font-bold mb-2">Profile <Link to="/settings" className="ml-4 text-base font-normal text-blue-600 hover:underline">Edit profile</Link></h1>
           <img className="w-40 h-40 my-4" src={user.photoUrl} alt={ user.displayName } />
           <div className="text-xl my-2">{user.displayName}</div>
-          {/*<img className="w-6 h-6" src="http://localhost:3000/{ user.favProgLang }.svg" alt="programming language" />*/}
+          <img className="w-6 h-6" src={ user.favProgLang + '.svg' } alt="programming language" />
           <p className="my-4 whitespace-pre-line">{user.bio}</p>
           <a className="text-blue-600 hover:underline" rel="noreferrer" href={user.blog} target="_blank">{user.blog}</a>
         </>

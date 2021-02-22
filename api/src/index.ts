@@ -110,7 +110,7 @@ app.get('/auth/github/callback', (req, res) => {
                 { expiresIn: jwt_expire },
                 (err, token) => {
                   if (err) throw err
-                  res.redirect('http://localhost:3000/register?code=' + token)
+                  res.redirect('https://codemate.vercel.app/register?code=' + token)
                 }
               )
             } else {
@@ -128,7 +128,7 @@ app.get('/auth/github/callback', (req, res) => {
                   { expiresIn: jwt_expire },
                   (err, token) => {
                     if (err) throw err
-                    res.redirect('http://localhost:3000/register?code=' + token)
+                    res.redirect('https://codemate.vercel.app/register?code=' + token)
                   }
                 )
               })
