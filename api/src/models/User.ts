@@ -12,10 +12,6 @@ const userSchema = new mongoose.Schema({
   displayName: {
     type: String
   },
-  githubAccessToken: {
-    type: String,
-    required: true
-  },
   favProgLang: {
     type: String,
     default: 'html'

@@ -10,6 +10,7 @@ import Footer from './components/Footer'
 
 import Welcome from './pages/Welcome'
 import Home from './pages/Home'
+import Friends from './pages/Friends'
 import Register from './pages/Register'
 import Profile from './pages/Profile'
 import Settings from './pages/Settings'
@@ -32,6 +33,9 @@ function App() {
             </Route>
             <Route path="/register">
               <Register />
+            </Route>
+            <Route path="/friends">
+              <Friends />
             </Route>
             <Route path="/home">
               <Home />

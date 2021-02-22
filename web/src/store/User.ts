@@ -7,7 +7,6 @@ const initialUser = () : User => {
     githubId: '',
     username: '',
     displayName: '',
-    githubAccessToken: '',
     favProgLang: '',
     bio: '',
     location: '',

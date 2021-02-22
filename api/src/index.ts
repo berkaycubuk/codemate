@@ -7,6 +7,8 @@ import jwt from 'jsonwebtoken'
 
 import auth from './middlewares/auth'
 
+import ConnectionRoute from './routes/Connection'
+
 import User from './models/User'
 
 import { UserInfo } from './types'
@@ -29,13 +31,20 @@ mongoose.connect(DB_URL, {
 app.use(express.json())
 app.use(cors())
 
+// Routes
+app.use(ConnectionRoute)
+
 app.get('/', (req, res) => {
   res.send('Hello!')
 })
 
 app.get('/user', auth, (req: any, res) => {
+  console.log(req.user.id)
    User.findById(req.user.id)
-    .then(user => res.json(user))
+    .then(user => {
+      console.log(user)
+      res.json(user)
+    })
 })
 
 app.put('/user', auth, (req: any, res) => {
@@ -90,7 +99,6 @@ app.get('/auth/github/callback', (req, res) => {
             githubId: response.body.id,
             username: response.body.login,
             displayName: response.body.name,
-            githubAccessToken: accessToken,
             bio: response.body.bio,
             location: response.body.location,
             blog: response.body.blog,
@@ -110,7 +118,7 @@ app.get('/auth/github/callback', (req, res) => {
                 { expiresIn: jwt_expire },
                 (err, token) => {
                   if (err) throw err
-                  res.redirect('https://codemate.vercel.app/register?code=' + token)
+                  res.redirect(process.env.CLIENT_URL + 'register?code=' + token)
                 }
               )
             } else {
@@ -128,7 +136,7 @@ app.get('/auth/github/callback', (req, res) => {
                   { expiresIn: jwt_expire },
                   (err, token) => {
                     if (err) throw err
-                    res.redirect('https://codemate.vercel.app/register?code=' + token)
+                    res.redirect(process.env.CLIENT_URL + 'register?code=' + token)
                   }
                 )
               })

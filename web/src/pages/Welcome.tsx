@@ -4,11 +4,13 @@ import userStore from '../store/User'
 import Cookies from 'js-cookie'
 import axios from 'axios'
 
+import apiRoute from '../api'
+
 export default function Home() {
   const { user, setUser } = userStore()
 
   if (Cookies.get('token') && user._id === '') {
-    axios.get('https://codemate-api.herokuapp.com/user', {
+    axios.get(apiRoute() + 'user', {
       headers: {
         Authorization: Cookies.get('token')
       }

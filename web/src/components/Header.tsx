@@ -16,7 +16,7 @@ export default function Header() {
       <nav className="ml-4">
         { user._id !== '' ? (
           <>
-            <Link to="/" className="ml-3 text-blue-600 hover:underline">Friends</Link>
+            <Link to="/friends" className="ml-3 text-blue-600 hover:underline">Friends</Link>
             <Link to="/profile" className="ml-3 text-blue-600 hover:underline">Profile</Link>
             <Link to="/" className="ml-3 text-blue-600 hover:underline" onClick={() => logout()}>Logout</Link>
           </>
