@@ -37,7 +37,7 @@ export default function Home() {
       </div>
 
       <h1 className="text-2xl font-bold mb-2">Home</h1>
-      <p className="text-lg">Meet with new people who likes your favourite programming language.</p>
+      <p className="text-lg">Meet with new people who likes your favorite programming language.</p>
 
       <div className="flex flex-wrap my-4">
         { people.map((user: User, key) => (
