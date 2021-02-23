@@ -141,7 +141,8 @@ app.get('/auth/github/callback', (req, res) => {
                   { expiresIn: jwt_expire },
                   (err, token) => {
                     if (err) throw err
-                    res.redirect(process.env.CLIENT_URL + 'register?code=' + token)
+                    // res.redirect(process.env.CLIENT_URL + 'register?code=' + token)
+                    res.redirect(`http://localhost:54321/auth/${token}`) // => extension url
                   }
                 )
               })
