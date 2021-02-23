@@ -39,11 +39,11 @@ app.get('/', (req, res) => {
 })
 
 app.get('/user', auth, (req: any, res) => {
-  console.log(req.user.id)
    User.findById(req.user.id)
     .then(user => {
-      console.log(user)
-      res.json(user)
+      res.json({
+        user: user
+      })
     })
 })
 
@@ -85,7 +85,6 @@ app.get('/auth/github/callback', (req, res) => {
     })
     .set('Accept', 'application/json')
     .then((response) => {
-      console.log(response.body)
       accessToken = response.body.access_token
 
       // Get user
@@ -94,7 +93,6 @@ app.get('/auth/github/callback', (req, res) => {
         .set('User-Agent', 'request')
         .set('Authorization', 'token ' + accessToken)
         .then((response) => {
-          console.log(response.body)
           let user = {
             githubId: response.body.id,
             username: response.body.login,
@@ -111,14 +109,14 @@ app.get('/auth/github/callback', (req, res) => {
           User.find({ githubId: user.githubId }, (err, docs: UserInfo[]) => {
             if (err) console.log(err)
             if (docs.length) {
-              console.log(docs)
               jwt.sign(
                 { id: docs[0]._id },
                 process.env.JWT_SECRET,
                 { expiresIn: jwt_expire },
                 (err, token) => {
                   if (err) throw err
-                  res.redirect(process.env.CLIENT_URL + 'register?code=' + token)
+                  // res.redirect(process.env.CLIENT_URL + 'register?code=' + token)
+                  res.redirect(`http://localhost:54321/auth/${token}`) // => extension url
                 }
               )
             } else {
@@ -126,7 +124,6 @@ app.get('/auth/github/callback', (req, res) => {
 
               newUser.save((err, result) => {
                 if (err) { 
-                  console.log(err)
                   // res.status(500).send('Error: User cannot registered')
                 }
   
