@@ -39,10 +39,10 @@ app.get('/', (req, res) => {
 })
 
 app.get('/user', auth, (req: any, res) => {
-   User.findById(req.user.id)
+   User.findById(req.user.id, '_id displayName username favProgLang bio location blog profileUrl photoUrl')
     .then(user => {
       res.json({
-        user: user
+        user
       })
     })
 })
@@ -52,13 +52,21 @@ app.put('/user', auth, (req: any, res) => {
 
   User.updateOne({ _id: req.user.id }, req.body)
     .then(() => {
-      res.json({
-        message: 'profile updated.',
-        user: req.body
-      })
+      User.findOne({ _id: req.user.id }, '_id displayName username favProgLang bio location blog profileUrl photoUrl')
+        .then((user) => {
+          res.json({
+            message: 'profile updated.',
+            user
+          })
+        }).catch((err) => {
+          console.log(err)
+          res.status(500).json({
+            message: 'something went wrong.'
+          })
+        })
     }).catch((err) => {
       res.status(500).json({
-        message: 'something is wrong.'
+        message: 'something went wrong.'
       })
     })
 })
@@ -146,8 +154,10 @@ app.get('/auth/github/callback', (req, res) => {
 })
 
 app.get('/people', auth, (req, res) => {
-  User.find({}, '_id username displayName favProgLang photoUrl').then((users) => {
-    res.json(users)
+  User.find({}, '_id username displayName favProgLang photoUrl profileUrl location bio blog').then((users) => {
+    res.json({
+      users
+    })
   })
 })
 

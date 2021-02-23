@@ -45,7 +45,7 @@ router.get('/connection/all', auth, (req: any, res) => {
     { userOne: req.user.id },
     { userTwo: req.user.id }
   ] }).then((connections: any) => {
-    User.find({}, 'displayName username _id photoUrl favProgLang').then((users) => {
+    User.find({}, 'displayName username _id photoUrl favProgLang bio location blog profileUrl').then((users) => {
       let connectionsArr = []
       for (let i = 0; i < connections.length; i++) {
         if (connections[i].userOne == req.user.id) {
@@ -64,7 +64,9 @@ router.get('/connection/all', auth, (req: any, res) => {
         return false
       })
 
-      res.json(friends)
+      res.json({
+        users: friends
+      })
     })
   }).catch((err) => {
     console.log(err)
