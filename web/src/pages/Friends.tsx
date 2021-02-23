@@ -3,29 +3,28 @@ import { Redirect, Link } from 'react-router-dom'
 import userStore from '../store/User'
 import axios from 'axios'
 import Cookies from 'js-cookie'
-import { User } from '../types'
 
 import apiRoute from '../api'
 
-export default function Home() {
+export default function Friend() {
   const { user } = userStore()
-  const [people, setPeople] = useState([])
+  const [friends, setFriends] = useState([])
 
   useEffect(() => {
-    getPeople()
+    getFriends()
   }, [])
 
   if (user._id === '') {
     return <Redirect to="/" />
   }
 
-  const getPeople = () => {
-    axios.get(apiRoute() + 'people', {
+  const getFriends = () => {
+    axios.get(apiRoute() + 'connection/all', {
       headers: {
         Authorization: Cookies.get('token')
       }
     }).then((res) => {
-      setPeople(res.data)
+      setFriends(res.data)
     }).catch((err) => {
       console.log(err)
     })
@@ -42,7 +41,7 @@ export default function Home() {
       <p className="text-lg">Meet with new people who likes your favorite programming language.</p>
 
       <div className="flex flex-wrap my-4">
-        { people.map((user: User, key) => (
+        { friends.map((user: any, key) => (
           <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4" key={key}>
             <Link to={`/profile/${ user.username }`} className="flex p-4 bg-gray-100">
               <img className="w-20 h-20" src={ user.photoUrl } alt={user.displayName} />

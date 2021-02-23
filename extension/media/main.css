@@ -1,0 +1,33 @@
+body {
+	background-color: transparent;
+}
+
+.user {
+  display: flex;
+  margin: 10px 0;
+  cursor: pointer;
+}
+
+.user img {
+  width: 60px;
+  height: 60px;
+  margin-right: 8px;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.button {
+  margin: 5px 0;
+}
+
+.form-group {
+  margin: 10px 0;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 4px;
+}

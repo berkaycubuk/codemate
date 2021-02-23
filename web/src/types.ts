@@ -3,7 +3,6 @@ export interface User {
   githubId: string
   username: string
   displayName: string
-  githubAccessToken: string
   favProgLang: string
   bio: string
   location: string

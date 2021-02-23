@@ -7,6 +7,8 @@ import jwt from 'jsonwebtoken'
 
 import auth from './middlewares/auth'
 
+import ConnectionRoute from './routes/Connection'
+
 import User from './models/User'
 
 import { UserInfo } from './types'
@@ -29,13 +31,20 @@ mongoose.connect(DB_URL, {
 app.use(express.json())
 app.use(cors())
 
+// Routes
+app.use(ConnectionRoute)
+
 app.get('/', (req, res) => {
   res.send('Hello!')
 })
 
 app.get('/user', auth, (req: any, res) => {
-   User.findById(req.user.id)
-    .then(user => res.json(user))
+   User.findById(req.user.id, '_id displayName username favProgLang bio location blog profileUrl photoUrl')
+    .then(user => {
+      res.json({
+        user
+      })
+    })
 })
 
 app.put('/user', auth, (req: any, res) => {
@@ -43,13 +52,21 @@ app.put('/user', auth, (req: any, res) => {
 
   User.updateOne({ _id: req.user.id }, req.body)
     .then(() => {
-      res.json({
-        message: 'profile updated.',
-        user: req.body
-      })
+      User.findOne({ _id: req.user.id }, '_id displayName username favProgLang bio location blog profileUrl photoUrl')
+        .then((user) => {
+          res.json({
+            message: 'profile updated.',
+            user
+          })
+        }).catch((err) => {
+          console.log(err)
+          res.status(500).json({
+            message: 'something went wrong.'
+          })
+        })
     }).catch((err) => {
       res.status(500).json({
-        message: 'something is wrong.'
+        message: 'something went wrong.'
       })
     })
 })
@@ -76,7 +93,6 @@ app.get('/auth/github/callback', (req, res) => {
     })
     .set('Accept', 'application/json')
     .then((response) => {
-      console.log(response.body)
       accessToken = response.body.access_token
 
       // Get user
@@ -85,12 +101,10 @@ app.get('/auth/github/callback', (req, res) => {
         .set('User-Agent', 'request')
         .set('Authorization', 'token ' + accessToken)
         .then((response) => {
-          console.log(response.body)
           let user = {
             githubId: response.body.id,
             username: response.body.login,
             displayName: response.body.name,
-            githubAccessToken: accessToken,
             bio: response.body.bio,
             location: response.body.location,
             blog: response.body.blog,
@@ -103,14 +117,14 @@ app.get('/auth/github/callback', (req, res) => {
           User.find({ githubId: user.githubId }, (err, docs: UserInfo[]) => {
             if (err) console.log(err)
             if (docs.length) {
-              console.log(docs)
               jwt.sign(
                 { id: docs[0]._id },
                 process.env.JWT_SECRET,
                 { expiresIn: jwt_expire },
                 (err, token) => {
                   if (err) throw err
-                  res.redirect('https://codemate.vercel.app/register?code=' + token)
+                  // res.redirect(process.env.CLIENT_URL + 'register?code=' + token)
+                  res.redirect(`http://localhost:54321/auth/${token}`) // => extension url
                 }
               )
             } else {
@@ -118,7 +132,6 @@ app.get('/auth/github/callback', (req, res) => {
 
               newUser.save((err, result) => {
                 if (err) { 
-                  console.log(err)
                   // res.status(500).send('Error: User cannot registered')
                 }
   
@@ -128,7 +141,7 @@ app.get('/auth/github/callback', (req, res) => {
                   { expiresIn: jwt_expire },
                   (err, token) => {
                     if (err) throw err
-                    res.redirect('https://codemate.vercel.app/register?code=' + token)
+                    res.redirect(process.env.CLIENT_URL + 'register?code=' + token)
                   }
                 )
               })
@@ -141,8 +154,10 @@ app.get('/auth/github/callback', (req, res) => {
 })
 
 app.get('/people', auth, (req, res) => {
-  User.find({}, '_id username displayName favProgLang photoUrl').then((users) => {
-    res.json(users)
+  User.find({}, '_id username displayName favProgLang photoUrl profileUrl location bio blog').then((users) => {
+    res.json({
+      users
+    })
   })
 })
 
