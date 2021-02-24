@@ -1,14 +1,14 @@
 # Codemate
 Connect with developers around the world!
 
-![video-1](./media/codemate-video.gif)
+![video-1](https://github.com/berkaycubuk/codemate/blob/main/extension/media/codemate-video.gif?raw=true)
 
 ## Quick start
 - **Step 1** => Login with Github
 - **Step 2** => Go to settings and customize your profile
 - **Step 3** => Go to people page and start connecting with people!
 
-![video-2](./media/codemate-video-2.gif)
+![video-2](https://github.com/berkaycubuk/codemate/blob/main/extension/media/codemate-video-2.gif?raw=true)
 
 ## Features
 - Login with Github
