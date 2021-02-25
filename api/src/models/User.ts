@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
   },
   favProgLang: {
     type: String,
-    default: 'html'
+    default: 'html5'
   },
   bio: {
     type: String

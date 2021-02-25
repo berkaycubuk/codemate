@@ -45,7 +45,7 @@
   <div class="form-group">
     <label for="progLang">Favorite Programming Language</label>
     <select id="progLang" bind:value={ favProgLang }>
-      <option value="html" disabled>HTML</option>
+      <option value="html5" disabled>HTML</option>
       <option value="js">Javascript</option>
       <option value="php">PHP</option>
       <option value="java">Java</option>
@@ -57,6 +57,12 @@
       <option value="go">Go</option>
       <option value="python">Python</option>
       <option value="haskell">Haskell</option>
+      <option value="elixir">Elixir</option>
+      <option value="fortran">Fortran</option>
+      <option value="scala">Scala</option>
+      <option value="kotlin">Kotlin</option>
+      <option value="r">R</option>
+      <option value="rust">Rust</option>
     </select>
   </div>
 
