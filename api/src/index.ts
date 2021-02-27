@@ -70,6 +70,86 @@ app.put('/user', auth, (req: any, res) => {
       })
     })
 })
+app.get('/auth/github/callback/web', (req, res) => {
+  const code = req.query.code
+
+  if (!code) {
+    return res.send({
+      success: false,
+      message: 'Error: no code'
+    })
+  }
+
+  let accessToken = ''
+
+  // Post request to get access_token
+  request
+    .post('https://github.com/login/oauth/access_token')
+    .send({ 
+      client_id: process.env.GITHUB_CLIENT_ID,
+      client_secret: process.env.GITHUB_CLIENT_SECRET,
+      code: code
+    })
+    .set('Accept', 'application/json')
+    .then((response) => {
+      accessToken = response.body.access_token
+
+      // Get user
+      request
+        .get('https://api.github.com/user')
+        .set('User-Agent', 'request')
+        .set('Authorization', 'token ' + accessToken)
+        .then((response) => {
+          let user = {
+            githubId: response.body.id,
+            username: response.body.login,
+            displayName: response.body.name,
+            bio: response.body.bio,
+            location: response.body.location,
+            blog: response.body.blog,
+            profileUrl: response.body.html_url,
+            photoUrl: response.body.avatar_url,
+            createdAt: new Date(),
+            updatedAt: new Date()
+          }
+
+          User.find({ githubId: user.githubId }, (err, docs: UserInfo[]) => {
+            if (err) console.log(err)
+            if (docs.length) {
+              jwt.sign(
+                { id: docs[0]._id },
+                process.env.JWT_SECRET,
+                { expiresIn: jwt_expire },
+                (err, token) => {
+                  if (err) throw err
+                  res.redirect(process.env.CLIENT_URL + '?code=' + token)
+                }
+              )
+            } else {
+              let newUser = new User(user)
+
+              newUser.save((err, result) => {
+                if (err) { 
+                  // res.status(500).send('Error: User cannot registered')
+                }
+  
+                jwt.sign(
+                  { id: result._id },
+                  process.env.JWT_SECRET,
+                  { expiresIn: jwt_expire },
+                  (err, token) => {
+                    if (err) throw err
+                    res.redirect(process.env.CLIENT_URL + '?code=' + token)
+                  }
+                )
+              })
+            }
+          })
+        }).catch((error) => {
+          console.log(error)
+        })
+    })
+})
 
 app.get('/auth/github/callback', (req, res) => {
   const code = req.query.code
@@ -123,7 +203,6 @@ app.get('/auth/github/callback', (req, res) => {
                 { expiresIn: jwt_expire },
                 (err, token) => {
                   if (err) throw err
-                  // res.redirect(process.env.CLIENT_URL + 'register?code=' + token)
                   res.redirect(`http://localhost:54321/auth/${token}`) // => extension url
                 }
               )
@@ -141,7 +220,6 @@ app.get('/auth/github/callback', (req, res) => {
                   { expiresIn: jwt_expire },
                   (err, token) => {
                     if (err) throw err
-                    // res.redirect(process.env.CLIENT_URL + 'register?code=' + token)
                     res.redirect(`http://localhost:54321/auth/${token}`) // => extension url
                   }
                 )

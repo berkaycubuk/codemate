@@ -10,6 +10,7 @@ import apiRoute from '../api'
 export default function Home() {
   const { user } = userStore()
   const [people, setPeople] = useState([])
+  const [fetched, setFetched] = useState(false)
 
   useEffect(() => {
     getPeople()
@@ -20,12 +21,14 @@ export default function Home() {
   }
 
   const getPeople = () => {
+    if (fetched) return
     axios.get(apiRoute() + 'people', {
       headers: {
         Authorization: Cookies.get('token')
       }
     }).then((res) => {
-      setPeople(res.data)
+      setPeople(res.data.users)
+      setFetched(true)
     }).catch((err) => {
       console.log(err)
     })
@@ -34,8 +37,8 @@ export default function Home() {
   return (
     <div className="my-4">
       <div className="my-2 bg-blue-100 p-4">
-        <h2 className="text-xl font-bold mb-2">Codemate in development!</h2>
-        <p>Thank you for joining Codemate! We're currently waiting for people to join. Don't forget to tell your friends!</p>
+        <h2 className="text-xl font-bold mb-2">Welcome to Codemate!</h2>
+        <p>Thank you for joining Codemate! Don't forget to tell your friends about us!</p>
       </div>
 
       <h1 className="text-2xl font-bold mb-2">Home</h1>
@@ -53,6 +56,7 @@ export default function Home() {
             </Link> 
           </div>
         )) }
+        { !fetched ? (<div>Loading...</div>) : (<></>) }
       </div>
     </div>
   )

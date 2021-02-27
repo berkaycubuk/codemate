@@ -9,6 +9,7 @@ import apiRoute from '../api'
 export default function Friend() {
   const { user } = userStore()
   const [friends, setFriends] = useState([])
+  const [fetched, setFetched] = useState(false)
 
   useEffect(() => {
     getFriends()
@@ -19,12 +20,14 @@ export default function Friend() {
   }
 
   const getFriends = () => {
+    if (fetched) return
     axios.get(apiRoute() + 'connection/all', {
       headers: {
         Authorization: Cookies.get('token')
       }
     }).then((res) => {
-      setFriends(res.data)
+      setFriends(res.data.users)
+      setFetched(true)
     }).catch((err) => {
       console.log(err)
     })
@@ -32,13 +35,7 @@ export default function Friend() {
 
   return (
     <div className="my-4">
-      <div className="my-2 bg-blue-100 p-4">
-        <h2 className="text-xl font-bold mb-2">Codemate in development!</h2>
-        <p>Thank you for joining Codemate! We're currently waiting for people to join. Don't forget to tell your friends!</p>
-      </div>
-
-      <h1 className="text-2xl font-bold mb-2">Home</h1>
-      <p className="text-lg">Meet with new people who likes your favorite programming language.</p>
+      <h1 className="text-2xl font-bold mb-2">Friends</h1>
 
       <div className="flex flex-wrap my-4">
         { friends.map((user: any, key) => (
@@ -52,6 +49,7 @@ export default function Friend() {
             </Link> 
           </div>
         )) }
+        { !fetched ? (<div>Loading...</div>) : (<></>) }
       </div>
     </div>
   )

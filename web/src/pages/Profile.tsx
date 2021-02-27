@@ -95,6 +95,7 @@ export default function Profile() {
     <div className="my-4">
       { username ? (
         <>
+        { !fetched ? (<div>Loading...</div>) : (<>
           <h1 className="text-2xl font-bold mb-2">Profile</h1>
           <img className="w-40 h-40 my-4" src={ userState.photoUrl } alt={ userState.displayName} />
           <div className="text-xl my-2">{ userState.displayName }</div>
@@ -118,6 +119,7 @@ export default function Profile() {
           ) }
           <img className="w-6 h-6" src={ process.env.PUBLIC_URL + '/' + userState.favProgLang + '.svg' } alt="programming language" />
           <a className="text-blue-600 hover:underline" rel="noreferrer" href={ userState.blog } target="_blank">{ userState.blog }</a>
+        </>)}
         </>
       ) : (
         <>
