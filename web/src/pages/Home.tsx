@@ -53,6 +53,10 @@ export default function Home() {
 
       <h1 className="text-2xl font-bold mb-2">Home</h1>
       <p className="text-lg">Meet with new people who likes your favorite programming language.</p>
+      <br/>
+      <a href="https://www.producthunt.com/posts/codemate?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-codemate" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=285928&theme=light" alt="Codemate - Connect with other developers | Product Hunt" style={{ width: '250px', height: '54px'}} width="250" height="54" /></a>
+      <br/>
+      <a className="text-blue-600 hover:underline" href="marketplace.visualstudio.com/items?itemName=berkaycubuk.codemate" rel="noreferrer" target="_blank">Get VsCode extension!</a>
 
       <div className="flex flex-wrap my-4">
         { people.map((user: User, key) => (
