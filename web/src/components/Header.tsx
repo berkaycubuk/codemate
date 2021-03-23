@@ -11,13 +11,14 @@ export default function Header() {
   }
 
   return (
-    <header className="flex items-center p-8 bg-gray-100">
+    <header className="flex items-center p-8 bg-white rounded-b">
       <Link to="/" className="text-xl font-semibold">Codemate</Link>
       <nav className="ml-4">
         { user._id !== '' ? (
           <>
             <Link to="/friends" className="ml-3 text-blue-600 hover:underline">Friends</Link>
             <Link to="/profile" className="ml-3 text-blue-600 hover:underline">Profile</Link>
+            <Link to="/settings" className="ml-3 text-blue-600 hover:underline">Settings</Link>
             <Link to="/" className="ml-3 text-blue-600 hover:underline" onClick={() => logout()}>Logout</Link>
           </>
         ) : (

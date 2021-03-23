@@ -3,6 +3,7 @@ import { Redirect, Link } from 'react-router-dom'
 import userStore from '../store/User'
 import axios from 'axios'
 import Cookies from 'js-cookie'
+import Profile from '../components/Profile'
 
 import apiRoute from '../api'
 
@@ -40,13 +41,7 @@ export default function Friend() {
       <div className="flex flex-wrap my-4">
         { friends.map((user: any, key) => (
           <div className="w-full md:w-1/2 lg:w-1/3 xl:w-1/4 p-4" key={key}>
-            <Link to={`/profile/${ user.username }`} className="flex p-4 bg-gray-100">
-              <img className="w-20 h-20" src={ user.photoUrl } alt={user.displayName} />
-              <div className="flex flex-col ml-4">
-                <div className="text-xl">{ user.displayName }</div>
-                <img className="w-6 h-6 mt-2" src={ user.favProgLang + '.svg' } alt="programming language" />
-              </div>
-            </Link> 
+            <Profile user={user} />
           </div>
         )) }
         { !fetched ? (<div>Loading...</div>) : (<></>) }

@@ -93,7 +93,7 @@ export default function Profile() {
 
   return (
     <div className="my-4">
-      { username ? (
+      { username && username !== user.username ? (
         <>
         { !fetched ? (<div>Loading...</div>) : (<>
           <h1 className="text-2xl font-bold mb-2">Profile</h1>
@@ -101,17 +101,17 @@ export default function Profile() {
           <div className="text-xl my-2">{ userState.displayName }</div>
           <p className="my-4 whitespace-pre-line">{ userState.bio }</p>
           { connectionState === '' ? (
-            <button className="inline-block px-4 py-2 my-2 text-white bg-blue-600 hover:opacity-80" onClick={() => sendConnectionRequest()}>Send Connection Request</button>
+            <button className="inline-block px-4 py-2 my-2 text-white bg-blue-600 hover:opacity-80 rounded" onClick={() => sendConnectionRequest()}>Send Connection Request</button>
           ) : (
             <>
               { connectionState === 'pending' ? (
-                <button className="inline-block px-4 py-2 my-2 text-white bg-blue-600 hover:opacity-80" onClick={() => acceptConnectionRequest()}>Accept Connection Request</button>
+                <button className="inline-block px-4 py-2 my-2 text-white bg-blue-600 hover:opacity-80 rounded" onClick={() => acceptConnectionRequest()}>Accept Connection Request</button>
               ) : (
                 <>
                   { connectionState === 'waiting' ? (
-                    <button className="inline-block px-4 py-2 my-2 text-white bg-blue-600 hover:opacity-80">Waiting Response</button>
+                    <button className="inline-block px-4 py-2 my-2 text-white bg-blue-600 hover:opacity-80 rounded">Waiting Response</button>
                   ) : (
-                    <button className="inline-block px-4 py-2 my-2 text-white bg-blue-600 hover:opacity-80" onClick={() => deleteConnection()}>Delete Connection</button>
+                    <button className="inline-block px-4 py-2 my-2 text-white bg-blue-600 hover:opacity-80 rounded" onClick={() => deleteConnection()}>Delete Connection</button>
                   ) }
                 </>
               ) }
