@@ -10,7 +10,7 @@ export default function Home() {
   const { user, setUser } = userStore()
   const userCode = new URLSearchParams(useLocation().search).get('code')
 
-  if (Cookies.get('token') && user._id === '') {
+  if (Cookies.get('token')) {
     axios.get(apiRoute() + 'user', {
       headers: {
         Authorization: Cookies.get('token')
@@ -24,7 +24,6 @@ export default function Home() {
       console.log(err)
       return null
     })
-  } else if (user._id !== '') {
     return <Redirect to="/home" />
   } else if (!Cookies.get('token') && userCode) {
     Cookies.set('token', userCode, { expires: 30 })
