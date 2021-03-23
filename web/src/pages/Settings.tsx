@@ -3,6 +3,7 @@ import { Redirect, Link } from 'react-router-dom'
 import axios from 'axios'
 import Cookies from 'js-cookie'
 import userStore from '../store/User'
+import apiRoute from '../api'
 
 export default function Settings() {
   const { user, setUser } = userStore()
@@ -23,7 +24,7 @@ export default function Settings() {
     user.location = location
     user.blog = blog
 
-    axios.put('https://codemate-api.herokuapp.com/user', user, {
+    axios.put(apiRoute() + '/user', user, {
       headers: {
         Authorization: Cookies.get('token')
       }

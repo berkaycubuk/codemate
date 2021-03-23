@@ -1,5 +1,9 @@
 # Change Log
 
+**v1.1.0** - 25.02.2021
+- New languages added
+- Html set to Html5
+
 **v1.0.2** - 24.02.2021
 - I hate that :/
 - Images are finally fixed (I guess)
