@@ -26,22 +26,8 @@ export default function Home() {
     })
   }, [])
 
-  if (user._id === '') {
+  if (!Cookies.get('token')) {
     return <Redirect to="/" />
-  }
-
-  const getPeople = () => {
-    if (fetched) return
-    axios.get(apiRoute() + 'people', {
-      headers: {
-        Authorization: Cookies.get('token')
-      }
-    }).then((res) => {
-      setPeople(res.data.users)
-      setFetched(true)
-    }).catch((err) => {
-      console.log(err)
-    })
   }
 
   return (
